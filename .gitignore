@@ -1,4 +1,5 @@
 /target/
 .idea/modules.xml
 capstone.iml
-
+src/main/resources/hibernate.cfg.xml
+.idea/modules.xml
