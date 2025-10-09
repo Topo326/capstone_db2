@@ -1,18 +1,15 @@
 package com.DAO;
 
 import com.model.Task;
-import com.controller.util.HibernateUtil;
 import com.model.enums.TaskState;
-import java.util.List;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import static com.controller.util.HibernateUtil.getSessionFactory;
 
 public class TaskDAO {
 
-    // A) TODAS LAS TAREAS DEL USUARIO (anclado en TaskUser)
-    public java.util.List<com.model.Task> listByUser(int userId) {
-        try (org.hibernate.Session s = com.controller.util.HibernateUtil.getSessionFactory().openSession()) {
+    // A) TODAS LAS TAREAS DEL USUARIO
+    public java.util.List<Task> listByUser(int userId) {
+        try (Session s = getSessionFactory().openSession()) {
             return s.createQuery(
                     "select distinct t "
                     + "from TaskUser a "
@@ -28,8 +25,8 @@ public class TaskDAO {
     }
 
     // B) MIS TAREAS FILTRADAS POR ESTADO ACTUAL
-    public java.util.List<com.model.Task> listByUserAndCurrentState(int userId, com.model.enums.TaskState state) {
-        try (org.hibernate.Session s = com.controller.util.HibernateUtil.getSessionFactory().openSession()) {
+    public java.util.List<Task> listByUserAndCurrentState(int userId, TaskState state) {
+        try (Session s = getSessionFactory().openSession()) {
             return s.createQuery(
                     "select distinct t "
                     + "from TaskUser a "
