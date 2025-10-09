@@ -1,4 +1,28 @@
+# Maven
 /target/
-.idea/modules.xml
-capstone.iml
+/out/
 
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/*.iws
+
+# NetBeans (por si acaso)
+nbproject/private/
+build/
+dist/
+nbbuild/
+*.bak
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Librerías locales
+/lib/
+
+# Config local (si NO quieres versionar tu hibernate real)
+src/main/resources/hibernate.cfg.xml
+
+pom.xml

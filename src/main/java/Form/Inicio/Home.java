@@ -8,15 +8,21 @@ package Form.Inicio;
  *
  * @author jala
  */
-public class Inicio extends javax.swing.JFrame {
+public class Home extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inicio.class.getName());
-
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
+    
     /**
      * Creates new form Inicio
      */
-    public Inicio() {
-        initComponents();
+    public Home() { 
+        setResizable(false);   // no permite cambiar el tamaño
+        initComponents();      // inicializa los componentes
+        setLocationRelativeTo(null); // centra la ventana
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // cierra la app al salir
+        LoginButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 105, 136), 2, true));
+        RegisterButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 105, 136), 2, true));
+
     }
 
     /**
@@ -30,9 +36,9 @@ public class Inicio extends javax.swing.JFrame {
 
         BackGround = new javax.swing.JPanel();
         BackGround2 = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
         LoginButton = new javax.swing.JButton();
         RegisterButton = new javax.swing.JButton();
-        Logo = new javax.swing.JLabel();
         Titulo1 = new javax.swing.JLabel();
         Titulo2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -58,7 +64,9 @@ public class Inicio extends javax.swing.JFrame {
         LoginButton.setForeground(new java.awt.Color(255, 255, 255));
         LoginButton.setText("Login");
         LoginButton.setBorder(null);
+        LoginButton.setBorderPainted(false);
         LoginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LoginButton.setFocusPainted(false);
         LoginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LoginButtonActionPerformed(evt);
@@ -70,37 +78,36 @@ public class Inicio extends javax.swing.JFrame {
         RegisterButton.setForeground(new java.awt.Color(255, 255, 255));
         RegisterButton.setText("Register");
         RegisterButton.setBorder(null);
+        RegisterButton.setBorderPainted(false);
         RegisterButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        RegisterButton.setFocusPainted(false);
         RegisterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RegisterButtonActionPerformed(evt);
             }
         });
 
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form/Images/Logo.jpeg"))); // NOI18N
-
         javax.swing.GroupLayout BackGround2Layout = new javax.swing.GroupLayout(BackGround2);
         BackGround2.setLayout(BackGround2Layout);
         BackGround2Layout.setHorizontalGroup(
             BackGround2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackGround2Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addGroup(BackGround2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackGround2Layout.createSequentialGroup()
-                        .addComponent(Logo)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackGround2Layout.createSequentialGroup()
-                        .addGroup(BackGround2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(RegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(50, 50, 50))))
+                .addContainerGap(258, Short.MAX_VALUE)
+                .addComponent(Logo)
+                .addGap(18, 18, 18))
+            .addGroup(BackGround2Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(BackGround2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(RegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         BackGround2Layout.setVerticalGroup(
             BackGround2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackGround2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(Logo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 327, Short.MAX_VALUE)
                 .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(RegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,38 +212,19 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        // TODO add your handling code here:
+        Login loginframe = new Login();
+        loginframe.setVisible(true);
+        
+        this.dispose();
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterButtonActionPerformed
-        // TODO add your handling code here:
+        Register registerframe = new Register();
+        registerframe.setVisible(true);
+        
+        this.dispose();
     }//GEN-LAST:event_RegisterButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Inicio().setVisible(true));
-    }
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackGround;
     private javax.swing.JPanel BackGround2;
