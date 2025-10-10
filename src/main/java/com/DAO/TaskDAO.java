@@ -1,8 +1,12 @@
 package com.DAO;
 
-import com.model.Task;
+import com.model.*;
 import com.model.enums.TaskState;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import java.time.LocalDateTime;
+
 import static com.controller.util.HibernateUtil.getSessionFactory;
 
 public class TaskDAO {
@@ -44,6 +48,33 @@ public class TaskDAO {
                     .setParameter("uid", userId)
                     .setParameter("st", state)
                     .list();
+        }
+    }
+
+    public void addTask(String name, String description, TaskState state, Category category, int userId, LocalDateTime endDate) {
+        try (Session session = getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+
+            Task task = new Task();
+            task.setTaskName(name);
+            task.setCategory(category);
+            task.setCreateDate(LocalDateTime.now());
+            session.persist(task);
+
+            TaskDetail detail = new TaskDetail();
+            detail.setTask(task);
+            detail.setState(state);
+            detail.setDescription(description);
+            detail.setInitDate(LocalDateTime.now());
+            detail.setEndDate(endDate);
+            session.persist(detail);
+
+            TaskUser tu = new TaskUser();
+            tu.setTask(task);
+            tu.setUser(session.getReference(User.class, userId));
+            session.persist(tu);
+
+            tx.commit();
         }
     }
 }
