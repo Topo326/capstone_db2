@@ -57,6 +57,7 @@ public class Login {
                     TaskMenu.show();
                     break;
                 case "2":
+                    TaskCreateAction.addTask();
                 case "3":
                 case "4":
                     System.out.println("En proceso..");

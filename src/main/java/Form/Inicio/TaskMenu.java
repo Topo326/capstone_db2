@@ -50,20 +50,36 @@ public class TaskMenu {
 
         System.out.println("\n--- LISTA DE TAREAS ---");
         for (Task t : tasks) {
-            Optional<TaskDetail> lastDetail = t.getDetails().stream()
-                    .max(Comparator.comparing(TaskDetail::getInitDate,
-                            Comparator.nullsFirst(Comparator.naturalOrder())));
 
-            String estado = lastDetail.map(TaskDetail::getState)
-                    .map(Enum::name)
-                    .orElse("Sin estado");
+            // Obtener el último TaskDetail por initDate
+            TaskDetail lastDetail = null;
+            for (TaskDetail detail : t.getDetails()) {
+                if (lastDetail == null || (detail.getInitDate() != null && detail.getInitDate().isAfter(lastDetail.getInitDate()))) {
+                    lastDetail = detail;
+                }
+            }
 
-            String descripcion = lastDetail.map(TaskDetail::getDescription)
-                    .orElse("(Sin descripción)");
+            // Estado y descripción
+            String estado = (lastDetail != null && lastDetail.getState() != null)
+                    ? lastDetail.getState().name()
+                    : TaskState.Pending.name();
 
+            String descripcion = (lastDetail != null && lastDetail.getDescription() != null)
+                    ? lastDetail.getDescription()
+                    : "(Sin descripción)";
+
+            // Fecha de creación y fecha de vencimiento
+            String fechaCreacion = (t.getCreateDate() != null) ? t.getCreateDate().toString() : "No registrada";
+            String fechaVencimiento = (lastDetail != null && lastDetail.getEndDate() != null)
+                    ? lastDetail.getEndDate().toString()
+                    : "No asignada";
+
+            // Mostrar la tarea
             System.out.println("• " + t.getTaskName()
                     + " | Estado: " + estado
-                    + " | Descripción: " + descripcion);
+                    + " | Descripción: " + descripcion
+                    + " | Fecha de creación: " + fechaCreacion
+                    + " | Fecha de vencimiento: " + fechaVencimiento);
         }
     }
 }
