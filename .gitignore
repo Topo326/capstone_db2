@@ -21,8 +21,3 @@ Thumbs.db
 
 # Librerías locales
 /lib/
-
-# Config local (si NO quieres versionar tu hibernate real)
-src/main/resources/hibernate.cfg.xml
-
-pom.xml
