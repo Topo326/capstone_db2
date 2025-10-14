@@ -26,4 +26,10 @@ public class TaskController {
         int userId = SessionData.getLoggedUser().getId();
         dao.addTask(nombre, descripcion, estado, categoria, userId, endDate);
     }
+    public void updateTask(Task task) {
+        dao.updateTask(task);
+    }
+    public void deleteTask(int taskId) {
+        dao.deleteTask(taskId);
+    }
 }

@@ -21,7 +21,6 @@ public class TaskDetail {
     @Column(name = "TaskDetail_End_Date")
     private LocalDateTime endDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "TaskDetail_State", length = 20)
     private TaskState state;
     public TaskDetail() {}
