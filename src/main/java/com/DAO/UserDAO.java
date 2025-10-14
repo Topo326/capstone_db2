@@ -1,14 +1,15 @@
-package com.dao;
+package com.DAO;
 
 import com.model.User;
 import com.controller.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import com.controller.util.PasswordUtil;
 
 public class UserDAO {
 
-    public User loginUser(String username, String password) {
+    public User loginUser(String username, String plainPassword) {
         Transaction transaction = null;
         User user = null;
 
@@ -16,21 +17,23 @@ public class UserDAO {
             transaction = session.beginTransaction();
 
             Query<User> query = session.createQuery(
-                    "FROM User WHERE username = :username AND password = :password", User.class);
+                    "FROM User WHERE username = :username", User.class);
             query.setParameter("username", username);
-            query.setParameter("password", password);
-
             user = query.uniqueResult();
 
             transaction.commit();
+
+            if (user != null && PasswordUtil.checkPassword(plainPassword, user.getPassword())) {
+                return user; // Si la contrasenia es correcta
+            }
         } catch (Exception e) {
-            if (transaction != null) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             e.printStackTrace();
         }
 
-        return user;
+        return null;
     }
 
     public boolean registerUser(User user) {

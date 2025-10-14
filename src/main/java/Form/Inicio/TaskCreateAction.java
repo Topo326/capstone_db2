@@ -1,18 +1,27 @@
 package Form.Inicio;
 
+import com.controller.CategoryController;
 import com.controller.TaskController;
+import com.controller.util.ScannerUtil;
 import com.model.Category;
 import com.model.enums.TaskState;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class TaskCreateAction {
 
-    private static final TaskController controller = new TaskController();
+    private static final TaskController taskController = new TaskController();
+    // 1. La Vista necesita acceso al CategoryController
+    private static final CategoryController categoryController = new CategoryController();
 
     public static void addTask() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = ScannerUtil.getInstance();
+
+        String[] state = {"Pending", "In Progress", "Done", "Canceled"};
 
         System.out.println("\n=== CREAR NUEVA TAREA ===");
         System.out.print("Nombre de la tarea: ");
@@ -21,39 +30,64 @@ public class TaskCreateAction {
         System.out.print("Descripción: ");
         String descripcion = sc.nextLine();
 
-        System.out.print("Estado (Pending, InProgress, Done, Canceled) o presione Enter para Pending: ");
-        String estadoInput = sc.nextLine().trim();
+        List<Category> categories = categoryController.getAllCategories();
+        if (categories == null || categories.isEmpty()) {
+            System.out.println("ERROR: No hay categorías disponibles en la base de datos.");
+            return;
+        }
 
-        TaskState estado = TaskState.Pending; // default
-        if (!estadoInput.isEmpty()) {
+        System.out.println("Seleccione una categoría:");
+        for (int i = 0; i < categories.size(); i++) {
+            System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
+        }
+        System.out.print("Opción: ");
+
+        int categoryChoice;
+        try {
+            categoryChoice = Integer.parseInt(sc.nextLine());
+            if (categoryChoice < 1 || categoryChoice > categories.size()) {
+                System.out.println("Selección inválida. Operación cancelada.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada no válida. Operación cancelada.");
+            return;
+        }
+
+        Category categoriaSeleccionada = categories.get(categoryChoice - 1);
+
+        System.out.println("Elige un estado: ");
+        int sum = 1;
+        for(String s : state){
+            System.out.println(sum + ". " + s);
+            sum+=1;
+        }
+        System.out.print("Opción: ");
+        int stateChoice = sc.nextInt();
+        String estadoInput = state[stateChoice - 1];
+        TaskState estado = null;
             try {
                 estado = TaskState.valueOf(estadoInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("⚠ Estado inválido. Se usará Pending.");
             }
-        }
-
-        // 👇 por ahora usamos una categoría con ID 1 (por ejemplo, "General")
-        Category categoria = new Category();
-        categoria.setId(1);
 
         System.out.print("Fecha de vencimiento (yyyy-MM-dd HH:mm) o presione Enter para no asignar: ");
         String fechaInput = sc.nextLine().trim();
-
         LocalDateTime endDate = null;
         if (!fechaInput.isEmpty()) {
             try {
-                endDate = LocalDateTime.parse(fechaInput.replace(" ", "T"));
-            } catch (Exception e) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                endDate = LocalDateTime.parse(fechaInput, formatter);
+            } catch (DateTimeParseException e) {
                 System.out.println("Formato de fecha inválido. No se asignará fecha de vencimiento.");
             }
         }
 
-        controller.agregarTarea(nombre, descripcion, estado, categoria, endDate);
+        taskController.agregarTarea(nombre, descripcion, estado, categoriaSeleccionada, endDate);
 
-        System.out.println("Tarea agregada exitosamente.");
-
-        Login.mostrarMenuPrincipal();
+        System.out.println("¡Tarea agregada exitosamente!");
     }
 }
+
 

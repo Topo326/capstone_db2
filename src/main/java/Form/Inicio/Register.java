@@ -1,15 +1,18 @@
 package Form.Inicio;
 
-import com.dao.UserDAO;
+import com.DAO.UserDAO;
 import com.model.User;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import com.controller.util.ScannerUtil;
+import com.controller.util.PasswordUtil;
+
 public class Register {
 
-    public void register() {
-        Scanner sc = new Scanner(System.in);
+    public static void register() {
+        Scanner sc = ScannerUtil.getInstance();
         UserDAO userDAO = new UserDAO();
 
         System.out.println("=== Registro de Usuario ===");
@@ -38,7 +41,8 @@ public class Register {
             return;
         }
 
-        User newUser = new User(username, password, LocalDate.now(), new HashSet<>());
+        String hashedPassword = PasswordUtil.hashPassword(password);
+        User newUser = new User(username, hashedPassword, LocalDate.now(), new HashSet<>());
 
         boolean success = userDAO.registerUser(newUser);
 
@@ -52,6 +56,5 @@ public class Register {
             System.out.println("Error al registrar el usuario.");
         }
 
-        sc.close();
     }
 }

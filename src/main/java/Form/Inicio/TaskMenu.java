@@ -1,6 +1,7 @@
 package Form.Inicio;
 
 import com.controller.TaskController;
+import com.controller.util.ScannerUtil;
 import com.model.Task;
 import com.model.TaskDetail;
 import com.model.enums.TaskState;
@@ -14,7 +15,7 @@ public class TaskMenu {
     private static final TaskController controller = new TaskController();
 
     public static void show() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = ScannerUtil.getInstance();
         while (true) {
             System.out.println("\n=== MENÚ DE TAREAS ===");
             System.out.println("1. Ver todas mis tareas");
@@ -81,5 +82,6 @@ public class TaskMenu {
                     + " | Fecha de creación: " + fechaCreacion
                     + " | Fecha de vencimiento: " + fechaVencimiento);
         }
+
     }
 }
