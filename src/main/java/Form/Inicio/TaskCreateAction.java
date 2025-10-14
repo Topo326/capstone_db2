@@ -64,12 +64,13 @@ public class TaskCreateAction {
         }
         System.out.print("Opción: ");
         int stateChoice = sc.nextInt();
+        sc.nextLine();
         String estadoInput = state[stateChoice - 1];
         TaskState estado = null;
             try {
-                estado = TaskState.valueOf(estadoInput);
+                estado = TaskState.fromDbValue(estadoInput);
             } catch (IllegalArgumentException e) {
-                System.out.println("⚠ Estado inválido. Se usará Pending.");
+                System.out.println("Estado inválido. Se usará Pending.");
             }
 
         System.out.print("Fecha de vencimiento (yyyy-MM-dd HH:mm) o presione Enter para no asignar: ");
