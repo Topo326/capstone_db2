@@ -62,7 +62,7 @@ public class TaskMenu {
 
             // Estado y descripción
             String estado = (lastDetail != null && lastDetail.getState() != null)
-                    ? lastDetail.getState().name()
+                    ? lastDetail.getState().getDbValue()
                     : TaskState.Pending.name();
 
             String descripcion = (lastDetail != null && lastDetail.getDescription() != null)

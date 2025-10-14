@@ -1,6 +1,7 @@
 package com.model;
 
 import com.model.enums.TaskState;
+import com.model.enums.TaskStateConverter;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -20,7 +21,7 @@ public class TaskDetail {
     private LocalDateTime initDate;
     @Column(name = "TaskDetail_End_Date")
     private LocalDateTime endDate;
-
+    @Convert(converter = TaskStateConverter.class)
     @Column(name = "TaskDetail_State", length = 20)
     private TaskState state;
     public TaskDetail() {}
