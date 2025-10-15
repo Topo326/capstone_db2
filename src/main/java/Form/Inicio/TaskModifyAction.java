@@ -6,6 +6,9 @@ import com.model.Task;
 import com.model.TaskDetail;
 import com.model.enums.TaskState;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -63,6 +66,7 @@ public class TaskModifyAction {
         }
 
         System.out.print("Nuevo estado (Pending, InProgress, Done, Canceled) (deja en blanco para no cambiar): ");
+
         String newStateStr = sc.nextLine();
         if (!newStateStr.isEmpty()) {
             try {
@@ -71,9 +75,18 @@ public class TaskModifyAction {
                 System.out.println("Estado inválido. No se ha modificado.");
             }
         }
-        // Aquí no creamos un nuevo 'TaskDetail', sino que actualizamos el que ya existe
-        // o si queremos mantener un historial, se crearía uno nuevo.
-        // Para simplificar, actualizaremos el estado de la tarea en sí.
+        System.out.println("Nueva hora [yyyy-mm-dd HH:MM] (deja en blanco para no cambiar): )");
+        String newDate = sc.nextLine();
+        LocalDateTime endDate = null;
+        if (!newDate.isEmpty()) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                endDate = LocalDateTime.parse(newDate, formatter);
+                latestDetail.setInitDate(endDate);
+            }catch (DateTimeParseException e) {
+                System.out.println("Formato de fecha inválido. No se asignará fecha de vencimiento.");
+            }
+        }
 
         controller.updateTask(selectedTask);
         System.out.println("¡Tarea actualizada correctamente!");

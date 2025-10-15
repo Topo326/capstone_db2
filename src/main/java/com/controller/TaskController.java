@@ -22,9 +22,13 @@ public class TaskController {
         return dao.listByUserAndCurrentState(uid, filter);
     }
 
-    public void agregarTarea(String nombre, String descripcion, TaskState estado, Category categoria, LocalDateTime endDate) {
+    public void agregarTarea(String nombre, String descripcion, TaskState estado, Category categoria, LocalDateTime endDate, Integer teamId) {
         int userId = SessionData.getLoggedUser().getId();
-        dao.addTask(nombre, descripcion, estado, categoria, userId, endDate);
+        dao.addTask(nombre, descripcion, estado, categoria, userId, endDate, teamId);
+    }
+    public List<Task> getTasksByTeam(int teamId) {
+        return dao.listByTeam(teamId);
+
     }
     public void updateTask(Task task) {
         dao.updateTask(task);

@@ -43,7 +43,8 @@ public class Menu {
             System.out.println("3. Modificar tarea");
             System.out.println("4. Eliminar tarea");
             System.out.println("5. Gestionar Categorías");
-            System.out.println("6. Cerrar sesión");
+            System.out.println("6. Gestionar Equipos");
+            System.out.println("7. Cerrar sesión");
             System.out.print("Seleccione una opción: ");
             String option = scanner.nextLine();
 
@@ -64,6 +65,9 @@ public class Menu {
                     CategoryMenu.show();
                     break;
                 case "6":
+                    TeamMenu.show();
+                    break;
+                case "7":
                     System.out.println("Sesión cerrada.");
                     exit = false;
                     break;

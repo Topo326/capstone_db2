@@ -4,6 +4,7 @@ import com.model.*;
 import com.model.enums.TaskState;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +13,7 @@ import static com.controller.util.HibernateUtil.getSessionFactory;
 public class TaskDAO {
 
     // A) TODAS LAS TAREAS DEL USUARIO
-    public java.util.List<Task> listByUser(int userId) {
+    public List<Task> listByUser(int userId) {
         try (Session s = getSessionFactory().openSession()) {
             return s.createQuery(
                     "select distinct t "
@@ -29,7 +30,7 @@ public class TaskDAO {
     }
 
     // B) MIS TAREAS FILTRADAS POR ESTADO ACTUAL
-    public java.util.List<Task> listByUserAndCurrentState(int userId, TaskState state) {
+    public List<Task> listByUserAndCurrentState(int userId, TaskState state) {
         try (Session s = getSessionFactory().openSession()) {
             return s.createQuery(
                             "select distinct t "
@@ -51,7 +52,7 @@ public class TaskDAO {
         }
     }
 
-    public void addTask(String name, String description, TaskState state, Category category, int userId, LocalDateTime endDate) {
+    public void addTask(String name, String description, TaskState state, Category category, int userId, LocalDateTime endDate, Integer teamId) {
         try (Session session = getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
@@ -72,9 +73,28 @@ public class TaskDAO {
             TaskUser tu = new TaskUser();
             tu.setTask(task);
             tu.setUser(session.getReference(User.class, userId));
+            if (teamId != null) {
+                tu.setTeam(session.getReference(Team.class, teamId));
+            }
             session.persist(tu);
 
             tx.commit();
+        }
+    }
+
+    public java.util.List<Task> listByTeam(int teamId) {
+        try (Session s = getSessionFactory().openSession()) {
+            return s.createQuery(
+                    "select distinct t "
+                            + "from TaskUser a "
+                            + "join a.task t "
+                            + "join fetch t.category "
+                            + "left join fetch t.assignments ta "
+                            + "left join fetch ta.team "
+                            + "where a.team.id = :teamId "
+                            + "order by t.createDate desc",
+                    com.model.Task.class
+            ).setParameter("teamId", teamId).list();
         }
     }
 
