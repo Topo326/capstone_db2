@@ -2,8 +2,10 @@ package Form.Inicio;
 
 import com.controller.CategoryController;
 import com.controller.TaskController;
+import com.controller.TeamController;
 import com.controller.util.ScannerUtil;
 import com.model.Category;
+import com.model.Team;
 import com.model.enums.TaskState;
 
 import java.time.LocalDateTime;
@@ -15,13 +17,13 @@ import java.util.Scanner;
 public class TaskCreateAction {
 
     private static final TaskController taskController = new TaskController();
-    // 1. La Vista necesita acceso al CategoryController
     private static final CategoryController categoryController = new CategoryController();
+    private static final TeamController teamController = new TeamController();
 
     public static void addTask() {
         Scanner sc = ScannerUtil.getInstance();
 
-        String[] state = {"Pending", "In Progress", "Done", "Canceled"};
+        String[] state = {"Pending", "InProgress", "Done", "Canceled"};
 
         System.out.println("\n=== CREAR NUEVA TAREA ===");
         System.out.print("Nombre de la tarea: ");
@@ -56,6 +58,25 @@ public class TaskCreateAction {
 
         Category categoriaSeleccionada = categories.get(categoryChoice - 1);
 
+        List<Team> teams = teamController.getAllTeams();
+        Integer teamId = null;
+        if (teams != null && !teams.isEmpty()) {
+            System.out.println("Seleccione un equipo (opcional):");
+            for (int i = 0; i < teams.size(); i++) {
+                System.out.println((i + 1) + ". " + teams.get(i).getName());
+            }
+            System.out.print("Opción (presione Enter para no asignar a un equipo): ");
+            String teamChoiceStr = sc.nextLine();
+            if (!teamChoiceStr.isEmpty()) {
+                try {
+                    int teamChoice = Integer.parseInt(teamChoiceStr);
+                    if (teamChoice >= 1 && teamChoice <= teams.size()) {
+                        teamId = teams.get(teamChoice - 1).getId();
+                    }
+                } catch (NumberFormatException e) {}
+            }
+        }
+
         System.out.println("Elige un estado: ");
         int sum = 1;
         for(String s : state){
@@ -63,8 +84,7 @@ public class TaskCreateAction {
             sum+=1;
         }
         System.out.print("Opción: ");
-        int stateChoice = sc.nextInt();
-        sc.nextLine();
+        int stateChoice = Integer.parseInt(sc.nextLine());
         String estadoInput = state[stateChoice - 1];
         TaskState estado = null;
             try {
@@ -85,7 +105,7 @@ public class TaskCreateAction {
             }
         }
 
-        taskController.agregarTarea(nombre, descripcion, estado, categoriaSeleccionada, endDate);
+        taskController.agregarTarea(nombre, descripcion, estado, categoriaSeleccionada, endDate, teamId);
 
         System.out.println("¡Tarea agregada exitosamente!");
     }
