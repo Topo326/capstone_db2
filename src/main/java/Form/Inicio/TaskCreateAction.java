@@ -88,7 +88,7 @@ public class TaskCreateAction {
         String estadoInput = state[stateChoice - 1];
         TaskState estado = null;
             try {
-                estado = TaskState.fromDbValue(estadoInput);
+                estado = TaskState.valueOf(estadoInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("Estado inválido. Se usará Pending.");
             }
