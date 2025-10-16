@@ -38,4 +38,18 @@ public class CategoryDAO {
             e.printStackTrace();
         }
     }
+
+    public void updateCategory(Category category) {
+        Transaction tx = null;
+        try (Session session = getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            session.merge(category);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
 }
