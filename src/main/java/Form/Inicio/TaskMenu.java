@@ -60,6 +60,8 @@ public class TaskMenu {
                 }
             }
 
+            String categoria = (t.getCategory() != null) ? t.getCategory().getCategoryName() : "General";
+
             // Estado y descripción
             String estado = (lastDetail != null && lastDetail.getState() != null)
                     ? lastDetail.getState().getDbValue()
@@ -77,6 +79,7 @@ public class TaskMenu {
 
             // Mostrar la tarea
             System.out.println("• " + t.getTaskName()
+                    + " | Categoria: " + categoria
                     + " | Estado: " + estado
                     + " | Descripción: " + descripcion
                     + " | Fecha de creación: " + fechaCreacion
