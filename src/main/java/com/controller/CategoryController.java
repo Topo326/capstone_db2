@@ -31,4 +31,19 @@ public class CategoryController {
         Category newCategory = new Category(name, description);
         dao.addCategory(newCategory);
     }
+
+    public Category findOrCreateDefaultCategory() {
+        List<Category> categories = dao.getAllCategories();
+
+        for (Category c : categories) {
+            if (c.getCategoryName().equalsIgnoreCase("General")) {
+                return c; // Ya existe la categoría por defecto
+            }
+        }
+
+        // Si no existe, la crea automáticamente
+        Category defaultCategory = new Category("General", "Categoría base por defecto");
+        dao.addCategory(defaultCategory);
+        return defaultCategory;
+    }
 }
