@@ -47,8 +47,6 @@ DB_PASSWORD=tu_contraseña
 
 ## 🧩 Ejecución del proyecto
 
-Desde la terminal de IntelliJ IDEA o desde una consola en la carpeta raíz del proyecto, ejecuta:
-
-- `mvn clean compile exec:java -Dexec.mainClass="com.Main"`
+Desde IntelliJ IDEA en el archivo main hacer click en el boton Play.
 
 
