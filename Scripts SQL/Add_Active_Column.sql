@@ -9,4 +9,8 @@ ADD Active BIT DEFAULT 1;
 
 ALTER TABLE Category 
 ADD Active BIT DEFAULT 1;
+
+ALTER TABLE Category
+ALTER COLUMN Active bit NOT NULL;
+
 GO

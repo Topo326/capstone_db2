@@ -11,7 +11,7 @@ import static com.controller.util.HibernateUtil.getSessionFactory;
 public class CategoryDAO {
     public List<Category> getAllCategories() {
         try (Session session = getSessionFactory().openSession()) {
-            return (List<Category>) session.createQuery("from Category").list();
+            return (List<Category>) session.createQuery("from Category where active = true").list();
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }

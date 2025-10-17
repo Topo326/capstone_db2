@@ -12,7 +12,7 @@ public class CategoryController {
         return dao.getAllCategories();
     }
 
-    public void editCategory(int categoryId, String newName, String newDescription) {
+    public void editCategory(int categoryId, String newName, String newDescription, Boolean active) {
         Category category = dao.findCategoryById(categoryId);
         if (category != null) {
             if (newName != null && !newName.trim().isEmpty()) {
@@ -20,6 +20,9 @@ public class CategoryController {
             }
             if (newDescription != null) {
                 category.setDescription(newDescription);
+            }
+            if (active != null) {
+                category.setActive(active);
             }
             dao.updateCategory(category);
         } else {
