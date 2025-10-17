@@ -20,7 +20,8 @@ public class CategoryMenu {
             System.out.println("1. Ver todas las categorías");
             System.out.println("2. Crear nueva categoría");
             System.out.println("3. Modificar categoría");
-            System.out.println("4. Volver al menú principal");
+            System.out.println("4. Eliminar categoria");
+            System.out.println("5. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             String option = sc.nextLine();
 
@@ -35,6 +36,9 @@ public class CategoryMenu {
                     editCategory();
                     break;
                 case "4":
+                    deActiveCategory();
+                    break;
+                case "5":
                     running = false;
                     break;
                 default:
@@ -86,7 +90,9 @@ public class CategoryMenu {
 
         System.out.println("\n--- SELECCIONA LA CATEGORÍA A MODIFICAR ---");
         for (int i = 0; i < categories.size(); i++) {
-            System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
+            if (categories.get(i).getActive() == true) {
+                System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
+            }
         }
         System.out.print("Elige una opción o presiona 0 para cancelar: ");
 
@@ -112,9 +118,64 @@ public class CategoryMenu {
         String newDescription = sc.nextLine();
 
         controller.editCategory(selectedCategory.getId(), newName.isEmpty() ? null : newName,
-                newDescription.isEmpty() ? null : newDescription
+                newDescription.isEmpty() ? null : newDescription,
+                selectedCategory.getActive()
         );
 
         System.out.println("¡Categoría modificada correctamente!");
+    }
+
+    private static void deActiveCategory() {
+        String option = "";
+        Scanner sc = ScannerUtil.getInstance();
+        List<Category> categories = controller.getAllCategories();
+
+        if (categories == null || categories.isEmpty()) {
+            System.out.println("No hay categorías para editar.");
+            return;
+        }
+
+        System.out.println("\n--- SELECCIONA LA CATEGORÍA A ELIMINAR ---");
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getActive() == true) {
+                System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
+            }
+        }
+        System.out.print("Elige una opción o presiona 0 para cancelar: ");
+
+        int choice;
+        try {
+            choice = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Opción inválida.");
+            return;
+        }
+
+        if (choice == 0 || choice > categories.size()) {
+            System.out.println("Operación cancelada.");
+            return;
+        }
+
+        while (!option.equalsIgnoreCase("n") || !option.equalsIgnoreCase("s")) {
+            System.out.print("Estas seguro?(s/n): ");
+            option = sc.nextLine();
+
+            if (option.equalsIgnoreCase("s")) {
+                Category selectedCategory = categories.get(choice - 1);
+
+                controller.editCategory(selectedCategory.getId(), selectedCategory.getCategoryName(),
+                        selectedCategory.getDescription(),
+                        false
+                );
+
+                System.out.println("¡Categoría eliminada correctamente!");
+                return;
+            } else if (option.equalsIgnoreCase("n")) {
+                System.out.println("Operación cancelada.");
+                return;
+            } else {
+                System.out.println("Valor invalido intente de nuevo.");
+            }
+        }
     }
 }
