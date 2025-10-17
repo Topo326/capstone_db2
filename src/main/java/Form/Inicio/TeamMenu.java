@@ -24,7 +24,7 @@ public class TeamMenu {
             System.out.println("\n=== GESTIÓN DE EQUIPOS ===");
             System.out.println("1. Ver todos los equipos");
             System.out.println("2. Crear nuevo equipo");
-            System.out.println("3. ver tareas por equipos");
+            System.out.println("3. Ver tareas por equipos");
             System.out.println("4. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             String option = sc.nextLine();

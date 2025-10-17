@@ -34,29 +34,38 @@ public class TaskCreateAction {
 
         List<Category> categories = categoryController.getAllCategories();
         if (categories == null || categories.isEmpty()) {
-            System.out.println("ERROR: No hay categorías disponibles en la base de datos.");
-            return;
+            System.out.println("No hay categorías registradas. Se creará la categoría 'General' por defecto...");
+            Category general = categoryController.findOrCreateDefaultCategory();
+            categories = List.of(general);
         }
 
-        System.out.println("Seleccione una categoría:");
+
+        System.out.println("Seleccione una categoría: ");
         for (int i = 0; i < categories.size(); i++) {
             System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
         }
         System.out.print("Opción: ");
 
-        int categoryChoice;
-        try {
-            categoryChoice = Integer.parseInt(sc.nextLine());
-            if (categoryChoice < 1 || categoryChoice > categories.size()) {
-                System.out.println("Selección inválida. Operación cancelada.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Entrada no válida. Operación cancelada.");
-            return;
-        }
+        String categoryChoiceStr = sc.nextLine().trim();
+        Category categoriaSeleccionada = null;
 
-        Category categoriaSeleccionada = categories.get(categoryChoice - 1);
+        if (categoryChoiceStr.isEmpty()) {
+            // El usuario presionó Enter sin elegir
+            categoriaSeleccionada = categoryController.findOrCreateDefaultCategory();
+        } else {
+            try {
+                int categoryChoice = Integer.parseInt(categoryChoiceStr);
+                if (categoryChoice >= 1 && categoryChoice <= categories.size()) {
+                    categoriaSeleccionada = categories.get(categoryChoice - 1);
+                } else {
+                    System.out.println("Selección inválida. Se usará la categoría 'General'.");
+                    categoriaSeleccionada = categoryController.findOrCreateDefaultCategory();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada no válida. Se usará la categoría 'General'.");
+                categoriaSeleccionada = categoryController.findOrCreateDefaultCategory();
+            }
+        }
 
         List<Team> teams = teamController.getAllTeams();
         Integer teamId = null;
