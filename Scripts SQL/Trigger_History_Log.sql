@@ -1,3 +1,6 @@
+USE to_do_capstone;
+GO
+
 CREATE TRIGGER after_insert_user
 ON Users
 AFTER INSERT

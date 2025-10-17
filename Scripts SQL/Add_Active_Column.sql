@@ -1,3 +1,9 @@
+USE to_do_capstone;
+Go
+
+ALTER TABLE TaskUser
+ALTER COLUMN Team_id INT NULL;
+
 ALTER TABLE TaskDetail 
 ADD Active BIT DEFAULT 1;
 
