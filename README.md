@@ -1,8 +1,8 @@
 # 📝 TO DO LIST CAPSTONE DB2
 
 Sistema de gestión de tareas desarrollado en **Java** con **Hibernate** y **SQL Server**.  
-Permite a los usuarios registrarse, ver sus tareas, crear nuevas, editarlas, eliminarlas y organizarlas por **categorías**.  
-También incluye la funcionalidad de **gestionar equipos**, permitiendo crear grupos de trabajo y ver las tareas asociadas a cada uno.
+Permite a los usuarios **registrarse**, **ver**, **crear**, **editar** y **eliminar** tareas, además de **organizarlas por categorías**.  
+También ofrece la funcionalidad de **gestionar equipos**, permitiendo crear grupos de trabajo y visualizar las tareas asociadas a cada uno.
 
 ---
 
@@ -19,22 +19,36 @@ También incluye la funcionalidad de **gestionar equipos**, permitiendo crear gr
 
 ## ⚙️ Configuración de la base de datos
 
-1. Crear la base de datos ejecutando el script principal:
-- `Script_Creacion_Tablas.sql`
-2. Ejecutar los scripts adicionales para asegurar la correcta estructura:
-- `Add_Active_Column.sql`
-- `Trigger_History_Log.sql`
+### 1️⃣ Crear la base de datos y tablas principales
 
-3. Revisar el archivo `.env` para asegurarte de que las credenciales sean correctas:
+Ejecuta el script principal en tu gestor SQL despues de crear la base de datos:
 
-```env
+```bash
+  Script_Creacion_Tablas.sql
+  Add_Active_Column.sql
+  Trigger_History_Log.sql
+```
+Recomendación:
+Puedes ejecutar los scripts desde:
+
+Windows: usando SQL Server Management Studio (SSMS) o DBeaver.
+
+Linux/macOS: usando Azure Data Studio, DBeaver, o el comando sqlcmd en terminal:
+
+- `sqlcmd -S localhost -U tu_usuario -P tu_contraseña -i Script_Creacion_Tablas.sql`
+
+## Edita el archivo .env y configura tus credenciales de conexión:
+
+```
 DB_URL=jdbc:sqlserver://localhost:1433;databaseName=to_do_capstone;encrypt=true;trustServerCertificate=true
 DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
 ```
 
-## Ejecucion
+## 🧩 Ejecución del proyecto
 
-Ejecutar el proyecto desde la terminal de IntelliJ:
+Desde la terminal de IntelliJ IDEA o desde una consola en la carpeta raíz del proyecto, ejecuta:
 
 - `mvn clean compile exec:java -Dexec.mainClass="com.Main"`
+
+
