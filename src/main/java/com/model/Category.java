@@ -16,6 +16,8 @@ public class Category {
     private String categoryName;
     @Column(name = "Category_description")
     private String description;
+    @Column(name = "Active")
+    private Boolean active;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
@@ -23,6 +25,7 @@ public class Category {
     public Category(String categoryName, String description) {
         this.categoryName = categoryName;
         this.description = description;
+        this.active = true;
     }
 
     public Integer getId() {
@@ -55,6 +58,14 @@ public class Category {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
